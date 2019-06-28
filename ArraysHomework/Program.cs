@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ArraysHomework
 {
@@ -8,17 +9,17 @@ namespace ArraysHomework
         {
             DisplayArray();
             //ReverseArray();
-            //GetOccurencesOf();
+            //GetOccurencesOf();            //Using LINQ=>Count
             //InsertBeforeElement();
-            //RemoveElementAtIndex();
-            //GetSum();
-            //UniqueElements();
-            //MergeAndSortAscending();
-            //GetMax();
-            //GetMin();
-            //SeparateOddFromEven();
-            //SortAsc();
-            //SortDesc();
+            //RemoveElementAtIndex();       //Using LINQ=>Lambda
+            //GetSum();                     //Using LINQ=>Sum
+            //UniqueElements();             //Using LINQ=>Distinct
+            //MergeAndSortAscending();      //Using LINQ=>Concat
+            //GetMax();                     //using LINQ=>Max
+            //GetMin();                     //using LINQ=>Min
+            //SeparateOddFromEven();        //Using LINQ=>Lambda
+            //SortAsc();                    //Using LINQ=>Lambda
+            //SortDesc();                   //Using LINQ=>Lambda
             //FindSecondBiggest();
             //FindSecondSmallest();
 
@@ -104,6 +105,14 @@ namespace ArraysHomework
         /*Write a method to reverse the order of the items in the array*/
         public static void ReverseArray()
         {
+            var myArray = GetIntArray();
+            Array.Reverse(myArray);
+            Console.Write("Your reversed array is: ");
+            foreach (var elem in myArray)
+            {
+                Console.Write($"{elem}, ");
+            }
+            /*
             Console.Write("Please enter 1 for numeric array, or any number for string array: ");
             int choose = int.Parse(Console.ReadLine());
             if (choose == 1)
@@ -122,16 +131,32 @@ namespace ArraysHomework
                     Console.Write($"{myArray[i]}, ");
                 }
             }
+            */
         }
         #endregion
 
-        #region 03 Get the number of occurences
+        #region 03 Get the number of occurences using LINQ-Count
         /*Write a method to get the number of occurrences of a specified element in an array*/
         public static void GetOccurencesOf()
         {
             var myArray = GetStringArray();
-            Console.WriteLine("Please specify the element to count: ");
+            Console.Write("Please specify the element to count: ");
             string myElement = Console.ReadLine();
+
+            int occurence = myArray.Count(x => x == myElement);
+            Console.WriteLine("****************************************************************************");
+            if (occurence == 1)
+            {
+                Console.Write($"The element {myElement} vas found {occurence} time");
+            }
+            else
+            {
+                Console.Write($"The element {myElement} vas found {occurence} times");
+            }
+
+
+            /*
+
             int counter = 0;
             foreach (var element in myArray)
             {
@@ -148,10 +173,8 @@ namespace ArraysHomework
             {
                 Console.WriteLine($"The element {myElement} was found {counter} times.");
             }
-
+            */
         }
-
-
 
         #endregion
 
@@ -176,6 +199,7 @@ namespace ArraysHomework
             {
                 myFinalArray[i] = myArray[i - 1];
             }
+
             Console.Write("Now, your string is: ");
             foreach (var element in myFinalArray)
             {
@@ -194,20 +218,24 @@ namespace ArraysHomework
             Console.Write("Please enter the index of the element to be removed: ");
             int indexToRemove = int.Parse(Console.ReadLine());
             int lengthOfSecondArray = myArray.Length - 1;
-            string[] secondArray = new string[lengthOfSecondArray];
-            int i = 0;
-            while (i < lengthOfSecondArray)
+            var secondArray = myArray.Where(w => w != myArray[indexToRemove]).ToArray();
+
+            /*
+        var secondArray = new string[lengthOfSecondArray];
+        int i = 0;
+        while (i < lengthOfSecondArray)
+        {
+            if (i != indexToRemove)
             {
-                if (i != indexToRemove)
-                {
-                    secondArray[i] = myArray[i];
-                }
-                else
-                {
-                    secondArray[i] = myArray[i + 1];
-                }
-                i++;
+                secondArray[i] = myArray[i];
             }
+            else
+            {
+                secondArray[i] = myArray[i + 1];
+            }
+            i++;
+        }
+        */
             Console.WriteLine("Your Array is now: ");
             foreach (var element in secondArray)
             {
@@ -221,13 +249,16 @@ namespace ArraysHomework
         public static void GetSum()
         {
             var myArray = GetIntArray();
+            int sum = myArray.Sum();
+
+            /*
             int i = 0;
             int sum = 0;
             while (i < myArray.Length)
             {
                 sum += myArray[i];
                 i++;
-            }
+            }*/
             Console.WriteLine($"The sum of all elements of the array is: {sum}.");
 
         }
@@ -239,7 +270,16 @@ namespace ArraysHomework
         public static void UniqueElements()
         {
             var myArray = GetIntArray();
+            var arrayToPrint = myArray.Distinct();
+            Console.Write("Your unique elements in array are: ");
+            foreach (var elem in arrayToPrint)
+            {
+                Console.Write($"{elem}, ");
+            }
+
+            /*
             int[] arrayToPrint = new int[myArray.Length];
+
             var index = -1; // to know where to add our unique element
             var stringToPrint = string.Empty; // ""
 
@@ -251,11 +291,13 @@ namespace ArraysHomework
                     arrayToPrint[index] = myArray[i];
                 }
             }
+            
             Console.Write("Your unique elements of array are: ");
             for (int i = 0; i <= index; i++)
             {
                 Console.Write($"{arrayToPrint[i]}, ");
-            }
+            }*/
+
         }
         #endregion
 
@@ -265,6 +307,10 @@ namespace ArraysHomework
         {
             var myArray1 = GetIntArray();
             var myArray2 = GetIntArray();
+            var mergedArray = myArray1.Concat(myArray2).ToArray();
+            Array.Sort(mergedArray);
+
+            /*
             var mergedArray = new int[myArray1.Length + myArray2.Length];
 
             int i = 0;
@@ -292,7 +338,7 @@ namespace ArraysHomework
                         mergedArray[k] = temp;
                     }
                 }
-            }
+            }*/
             Console.WriteLine();
             foreach (var elem in mergedArray)
             {
@@ -301,12 +347,14 @@ namespace ArraysHomework
         }
         #endregion
 
-        #region 09 Maximum element in array
+        #region 09 Maximum element in array using LINQ Max()
         /*Write a program to find maximum and minimum element in an array.*/
         public static void GetMax()
         {
             var myArray = GetIntArray();
-            int max = myArray[0];
+            int max = myArray.Max();
+
+            /*
             for (int i = 0; i < myArray.Length; i++)
             {
                 if (max < myArray[i])
@@ -314,16 +362,18 @@ namespace ArraysHomework
                     max = myArray[i];
                 }
             }
+            */
             Console.WriteLine($"The biggest element in your array is: {max}");
         }
         #endregion
 
-        #region 10 Minimum element in array
+        #region 10 Minimum element in array using LINQ Min()
         /*Write a program to find maximum and minimum element in an array.*/
         public static void GetMin()
         {
             var myArray = GetIntArray();
-            int min = myArray[0];
+            int min = myArray.Min();
+            /*
             for (int i = 0; i < myArray.Length; i++)
             {
                 if (min > myArray[i])
@@ -331,15 +381,34 @@ namespace ArraysHomework
                     min = myArray[i];
                 }
             }
+            */
             Console.WriteLine($"The smallest element in your array is: {min}");
         }
         #endregion
 
-        #region 11 Separate Odd from Even
-        /*Write a programin to separate odd and even integers in separate arrays*/
+        #region 11 Separate Odd from Even using LINQ Select Where
+        /*Write a program to separate odd and even integers in separate arrays*/
         public static void SeparateOddFromEven()
         {
             var myArray = GetIntArray();
+            var even = myArray.Select(x => x % 2 == 0);
+            var even2 = myArray.Where(x => x % 2 == 0);
+            Console.Write("Numerele pare din array sunt: ");
+            foreach (var ev2 in even2)
+            {
+                Console.Write($"{ev2}, ");
+            }
+            Console.WriteLine();
+            var odd = myArray.Select(x => x % 2 != 0);
+            var odd2 = myArray.Where(x => x % 2 != 0);
+            Console.Write("Numerele impare din array sunt: ");
+            foreach (var od2 in odd2)
+            {
+                Console.Write($"{od2}, ");
+            }
+            /*
+
+
             int countEven = 0;
             int countOdd = 0;
             for (int i = 0; i < myArray.Length; i++)
@@ -382,6 +451,7 @@ namespace ArraysHomework
             {
                 Console.Write($"{element}, ");
             }
+            */
         }
 
 
@@ -394,6 +464,10 @@ namespace ArraysHomework
         public static void SortAsc()
         {
             var myArray = GetIntArray();
+            Array.Sort<int>(myArray);
+
+
+            /*
             for (int i = 0; i < myArray.Length - 1; i++)
             {
                 for (int j = i + 1; j < myArray.Length; j++)
@@ -406,11 +480,13 @@ namespace ArraysHomework
                     }
                 }
             }
-            Console.WriteLine();
+            */
+            Console.Write("Array-ul sortat crescator este: ");
             foreach (var elem in myArray)
             {
                 Console.Write($"{elem},");
             }
+
         }
 
         #endregion
@@ -420,6 +496,11 @@ namespace ArraysHomework
         public static void SortDesc()
         {
             var myArray = GetIntArray();
+            Array.Sort<int>(myArray);
+            Array.Reverse<int>(myArray);
+
+
+            /*
             for (int i = 0; i < myArray.Length - 1; i++)
             {
                 for (int j = i + 1; j < myArray.Length; j++)
@@ -432,7 +513,8 @@ namespace ArraysHomework
                     }
                 }
             }
-            Console.WriteLine();
+            */
+            Console.WriteLine("Array-ul sortat descrescator este: ");
             foreach (var elem in myArray)
             {
                 Console.Write($"{elem},");
