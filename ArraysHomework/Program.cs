@@ -7,11 +7,11 @@ namespace ArraysHomework
     {
         static void Main(string[] args)
         {
-            DisplayArray();
+            //DisplayArray();
             //ReverseArray();
             //GetOccurencesOf();            //Using LINQ=>Count
             //InsertBeforeElement();
-            //RemoveElementAtIndex();       //Using LINQ=>Lambda
+            RemoveElementAtIndex();
             //GetSum();                     //Using LINQ=>Sum
             //UniqueElements();             //Using LINQ=>Distinct
             //MergeAndSortAscending();      //Using LINQ=>Concat
@@ -218,24 +218,24 @@ namespace ArraysHomework
             Console.Write("Please enter the index of the element to be removed: ");
             int indexToRemove = int.Parse(Console.ReadLine());
             int lengthOfSecondArray = myArray.Length - 1;
-            var secondArray = myArray.Where(w => w != myArray[indexToRemove]).ToArray();
 
-            /*
-        var secondArray = new string[lengthOfSecondArray];
-        int i = 0;
-        while (i < lengthOfSecondArray)
-        {
-            if (i != indexToRemove)
+
+
+            var secondArray = new string[lengthOfSecondArray];
+            int i = 0;
+            while (i < lengthOfSecondArray)
             {
-                secondArray[i] = myArray[i];
+                if (i != indexToRemove)
+                {
+                    secondArray[i] = myArray[i];
+                }
+                else
+                {
+                    secondArray[i] = myArray[i + 1];
+                }
+                i++;
             }
-            else
-            {
-                secondArray[i] = myArray[i + 1];
-            }
-            i++;
-        }
-        */
+
             Console.WriteLine("Your Array is now: ");
             foreach (var element in secondArray)
             {
